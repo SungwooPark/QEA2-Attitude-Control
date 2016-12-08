@@ -1,18 +1,15 @@
 function res = attitude_sim(Mx, My, Mz)
-%Return a vector of angular velocity in x,y,z directions
+%Return a vector of angular velocity and Euler angles in x,y,z directions
 %   Mx,My,Mz: Moment in x,y,z direction
 
     %Initial values
     init_ang_vel_x = 0;
     init_ang_vel_y = 0;
     init_ang_vel_z = 0;
-    init_ang_acel_x = Mx/3.992625;
-    init_ang_acel_y = My/3.992625;
-    init_ang_acel_z = Mz/3.992625;
     
     init_phi = 0;
-    init_theta = 10;
-    init_psi = 10;
+    init_theta = 0.1;
+    init_psi = 0.1;
     
     function res = sim(t,P)
     %ODE function
@@ -25,9 +22,9 @@ function res = attitude_sim(Mx, My, Mz)
         psi = P(6);
         
         %Change in values
-        d_ang_vel_x = init_ang_acel_x;
-        d_ang_vel_y = init_ang_acel_y;
-        d_ang_vel_z = init_ang_acel_z;
+        d_ang_vel_x = Mx/3.992625;
+        d_ang_vel_y = My/3.992625;
+        d_ang_vel_z = Mz/3.992625;
         
         d_phi = (sin(psi)/sin(theta))*ang_vel_x + (cos(psi)/sin(theta))*ang_vel_y;
         d_theta= cos(psi)*ang_vel_x + (-sin(psi))*ang_vel_y;
@@ -51,7 +48,8 @@ function res = attitude_sim(Mx, My, Mz)
     
     clf
     hold on
-    disp(result_psi)
+    %disp(result_psi)
+    %plot(T,wy);
     plot(T,result_phi);
     plot(T, result_theta);
     plot(T,result_psi);
